@@ -1,5 +1,22 @@
+torch
+torchvision
+torchsummary
+pytorch-ignite
 ninja
-yacs
 cython
+cffi
+opencv-python
+msgpack
+easydict
 matplotlib
+pyyaml
+tensorboardX
+yacs
+pycocotools # For Windows users, call pip install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI
+codecov
+pytest
+pytest-cov
+matplotlib
+scipy
+pillow
 tqdm
