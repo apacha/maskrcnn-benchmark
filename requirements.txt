@@ -20,3 +20,6 @@ matplotlib
 scipy
 pillow
 tqdm
+omrdatasettools
+muscima
+pycococreatortools # Install via pip install git+git://github.com/waspinator/pycococreator.git@0.2.0
