@@ -5,8 +5,20 @@ import os
 
 
 class DatasetCatalog(object):
-    DATA_DIR = "datasets"
+    DATA_DIR = "../datasets"
     DATASETS = {
+        "muscima_pp_measure_annotation_training": {
+            "img_dir": "muscima_pp/v1.0/data/images",
+            "ann_file": "muscima_pp/v1.0/data/coco/training_measure_annotations.json"
+        },
+        "muscima_pp_measure_annotation_validation": {
+            "img_dir": "muscima_pp/v1.0/data/images",
+            "ann_file": "muscima_pp/v1.0/data/coco/validation_measure_annotations.json"
+        },
+        "muscima_pp_measure_annotation_testing": {
+            "img_dir": "muscima_pp/v1.0/data/images",
+            "ann_file": "muscima_pp/v1.0/data/coco/testing_measure_annotations.json"
+        },
         "coco_2017_train": {
             "img_dir": "coco/train2017",
             "ann_file": "coco/annotations/instances_train2017.json"
@@ -108,7 +120,18 @@ class DatasetCatalog(object):
 
     @staticmethod
     def get(name):
-        if "coco" in name:
+        if "muscima_pp" in name:
+            data_dir = DatasetCatalog.DATA_DIR
+            attrs = DatasetCatalog.DATASETS[name]
+            args = dict(
+                root=os.path.join(data_dir, attrs["img_dir"]),
+                ann_file=os.path.join(data_dir, attrs["ann_file"]),
+            )
+            return dict(
+                factory="COCODataset",
+                args=args,
+            )
+        elif "coco" in name:
             data_dir = DatasetCatalog.DATA_DIR
             attrs = DatasetCatalog.DATASETS[name]
             args = dict(
