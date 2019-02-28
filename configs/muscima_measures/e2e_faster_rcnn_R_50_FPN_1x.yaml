@@ -3,7 +3,8 @@ MODEL:
   WEIGHT: "catalog://ImageNetPretrained/MSRA/R-50"
   BACKBONE:
     CONV_BODY: "R-50-FPN"
-    OUT_CHANNELS: 256
+  RESNETS:
+    BACKBONE_OUT_CHANNELS: 256
   RPN:
     USE_FPN: True
     ANCHOR_STRIDE: (4, 8, 16, 32, 64)
@@ -19,13 +20,14 @@ MODEL:
     POOLER_SAMPLING_RATIO: 2
     FEATURE_EXTRACTOR: "FPN2MLPFeatureExtractor"
     PREDICTOR: "FPNPredictor"
+    NUM_CLASSES: 4
 DATASETS:
   TRAIN: ("muscima_pp_measure_annotation_training", "muscima_pp_measure_annotation_validation")
   TEST: ("muscima_pp_measure_annotation_testing",)
 DATALOADER:
   SIZE_DIVISIBILITY: 32
 INPUT:
-  MIN_SIZE_TRAIN: 800
+  MIN_SIZE_TRAIN: (800,)
   MAX_SIZE_TRAIN: 1333
   MIN_SIZE_TEST: 800
   MAX_SIZE_TEST: 1333
@@ -35,4 +37,4 @@ SOLVER:
   STEPS: (6000, 8000)
   MAX_ITER: 10000
   IMS_PER_BATCH: 4
-  CHECKPOINT_PERIOD: 500
+  CHECKPOINT_PERIOD: 100
