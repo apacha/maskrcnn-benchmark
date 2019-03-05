@@ -8,16 +8,16 @@ class DatasetCatalog(object):
     DATA_DIR = "../datasets"
     DATASETS = {
         "muscima_pp_measure_annotation_training": {
-            "img_dir": "muscima_pp/v1.0/data/images",
-            "ann_file": "muscima_pp/v1.0/data/coco/training_measure_annotations.json"
+            "img_dir": "C:/Users/Alex/Repositories/maskrcnn-benchmark/datasets/muscima_pp/v1.0/data/images",
+            "ann_file": "C:/Users/Alex/Repositories/maskrcnn-benchmark/datasets/muscima_pp/v1.0/data/coco/training_measure_annotations.json"
         },
         "muscima_pp_measure_annotation_validation": {
-            "img_dir": "muscima_pp/v1.0/data/images",
-            "ann_file": "muscima_pp/v1.0/data/coco/validation_measure_annotations.json"
+            "img_dir": "C:/Users/Alex/Repositories/maskrcnn-benchmark/datasets/muscima_pp/v1.0/data/images",
+            "ann_file": "C:/Users/Alex/Repositories/maskrcnn-benchmark/datasets/muscima_pp/v1.0/data/coco/validation_measure_annotations.json"
         },
         "muscima_pp_measure_annotation_testing": {
-            "img_dir": "muscima_pp/v1.0/data/images",
-            "ann_file": "muscima_pp/v1.0/data/coco/testing_measure_annotations.json"
+            "img_dir": "C:/Users/Alex/Repositories/maskrcnn-benchmark/datasets/muscima_pp/v1.0/data/images",
+            "ann_file": "C:/Users/Alex/Repositories/maskrcnn-benchmark/datasets/muscima_pp/v1.0/data/coco/testing_measure_annotations.json"
         },
         "coco_2017_train": {
             "img_dir": "coco/train2017",
