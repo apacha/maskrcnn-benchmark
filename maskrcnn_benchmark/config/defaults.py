@@ -61,6 +61,8 @@ _C.INPUT.TO_BGR255 = True
 _C.DATASETS = CN()
 # List of the dataset names for training, as present in paths_catalog.py
 _C.DATASETS.TRAIN = ()
+# List of the dataset names for validation, as present in paths_catalog.py
+_C.DATASETS.VALIDATE = ()
 # List of the dataset names for testing, as present in paths_catalog.py
 _C.DATASETS.TEST = ()
 

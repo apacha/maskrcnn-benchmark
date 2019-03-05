@@ -22,7 +22,8 @@ MODEL:
     PREDICTOR: "FPNPredictor"
     NUM_CLASSES: 4
 DATASETS:
-  TRAIN: ("muscima_pp_measure_annotation_training", "muscima_pp_measure_annotation_validation")
+  TRAIN: ("muscima_pp_measure_annotation_training",)
+  VALIDATE: ("muscima_pp_measure_annotation_validation",)
   TEST: ("muscima_pp_measure_annotation_testing",)
 DATALOADER:
   SIZE_DIVISIBILITY: 32
