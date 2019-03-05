@@ -15,95 +15,18 @@ class COCODemo(object):
     # COCO categories for pretty print
     CATEGORIES = [
         "__background",
-        "person",
-        "bicycle",
-        "car",
-        "motorcycle",
-        "airplane",
-        "bus",
-        "train",
-        "truck",
-        "boat",
-        "traffic light",
-        "fire hydrant",
-        "stop sign",
-        "parking meter",
-        "bench",
-        "bird",
-        "cat",
-        "dog",
-        "horse",
-        "sheep",
-        "cow",
-        "elephant",
-        "bear",
-        "zebra",
-        "giraffe",
-        "backpack",
-        "umbrella",
-        "handbag",
-        "tie",
-        "suitcase",
-        "frisbee",
-        "skis",
-        "snowboard",
-        "sports ball",
-        "kite",
-        "baseball bat",
-        "baseball glove",
-        "skateboard",
-        "surfboard",
-        "tennis racket",
-        "bottle",
-        "wine glass",
-        "cup",
-        "fork",
-        "knife",
-        "spoon",
-        "bowl",
-        "banana",
-        "apple",
-        "sandwich",
-        "orange",
-        "broccoli",
-        "carrot",
-        "hot dog",
-        "pizza",
-        "donut",
-        "cake",
-        "chair",
-        "couch",
-        "potted plant",
-        "bed",
-        "dining table",
-        "toilet",
-        "tv",
-        "laptop",
-        "mouse",
-        "remote",
-        "keyboard",
-        "cell phone",
-        "microwave",
-        "oven",
-        "toaster",
-        "sink",
-        "refrigerator",
-        "book",
-        "clock",
-        "vase",
-        "scissors",
-        "teddy bear",
-        "hair drier",
-        "toothbrush",
+        "system_measure",
+        "stave_measure",
+        "stave",
     ]
 
     def __init__(
-        self,
-        cfg,
-        confidence_threshold=0.7,
-        show_mask_heatmaps=False,
-        masks_per_dim=2,
-        min_image_size=224,
+            self,
+            cfg,
+            confidence_threshold=0.7,
+            show_mask_heatmaps=False,
+            masks_per_dim=2,
+            min_image_size=224,
     ):
         self.cfg = cfg.clone()
         self.model = build_detection_model(cfg)
@@ -369,9 +292,11 @@ class COCODemo(object):
 
         return image
 
+
 import numpy as np
 import matplotlib.pyplot as plt
 from maskrcnn_benchmark.structures.keypoint import PersonKeypoints
+
 
 def vis_keypoints(img, kps, kp_thresh=2, alpha=0.7):
     """Visualizes keypoints (adapted from vis_one_image).
@@ -390,14 +315,14 @@ def vis_keypoints(img, kps, kp_thresh=2, alpha=0.7):
 
     # Draw mid shoulder / mid hip first for better visualization.
     mid_shoulder = (
-        kps[:2, dataset_keypoints.index('right_shoulder')] +
-        kps[:2, dataset_keypoints.index('left_shoulder')]) / 2.0
+                           kps[:2, dataset_keypoints.index('right_shoulder')] +
+                           kps[:2, dataset_keypoints.index('left_shoulder')]) / 2.0
     sc_mid_shoulder = np.minimum(
         kps[2, dataset_keypoints.index('right_shoulder')],
         kps[2, dataset_keypoints.index('left_shoulder')])
     mid_hip = (
-        kps[:2, dataset_keypoints.index('right_hip')] +
-        kps[:2, dataset_keypoints.index('left_hip')]) / 2.0
+                      kps[:2, dataset_keypoints.index('right_hip')] +
+                      kps[:2, dataset_keypoints.index('left_hip')]) / 2.0
     sc_mid_hip = np.minimum(
         kps[2, dataset_keypoints.index('right_hip')],
         kps[2, dataset_keypoints.index('left_hip')])
