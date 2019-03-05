@@ -1,4 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+import cv2
 import datetime
 import logging
 import time
@@ -11,6 +12,7 @@ from maskrcnn_benchmark.data.datasets.evaluation import evaluate
 from ..utils.comm import is_main_process, get_world_size
 from ..utils.comm import all_gather
 from ..utils.comm import synchronize
+import numpy as np
 
 
 def compute_on_dataset(model, data_loader, device):
@@ -51,6 +53,54 @@ def _accumulate_predictions_from_multiple_gpus(predictions_per_gpu):
     return predictions
 
 
+def select_top_predictions(prediction, confidence_threshold=0.5):
+    scores = prediction.get_field("scores")
+    keep = torch.nonzero(scores > confidence_threshold).squeeze(1)
+    prediction = prediction[keep]
+    scores = prediction.get_field("scores")
+    _, idx = scores.sort(0, descending=True)
+    return prediction[idx]
+
+
+def overlay_boxes(image, prediction):
+    """
+    Adds the predicted boxes on top of the image
+
+    Arguments:
+        image (np.ndarray): an image as returned by OpenCV
+        prediction (BoxList): the result of the computation by the model.
+            It should contain the field `labels`.
+    """
+    labels = prediction.get_field("labels")
+    boxes = prediction.bbox
+
+    colors = compute_colors_for_labels(labels).tolist()
+    image = np.array(image).transpose((1, 2, 0))
+
+    for box, color in zip(boxes, colors):
+        box = box.to(torch.int64)
+        top_left, bottom_right = box[:2].int().tolist(), box[2:].int().tolist()
+        image = cv2.rectangle(image, tuple(top_left), tuple(bottom_right), tuple(color), 1)
+
+    return image
+
+
+def compute_colors_for_labels(labels):
+    palette = torch.tensor([2 ** 25 - 1, 2 ** 15 - 1, 2 ** 21 - 1])
+    colors = labels[:, None] * palette
+    colors = (colors % 255).numpy().astype("uint8")
+    return colors
+
+
+def visualize_results_in_images(dataset, predictions, output_folder):
+    for data_point, prediction in zip(dataset, predictions):
+        top_predictions = select_top_predictions(prediction)
+        image = data_point[0]
+        image = overlay_boxes(image, top_predictions)
+        image_id = dataset.id_to_img_map[data_point[2]]
+        cv2.imwrite(f"test-{image_id}.png", image)
+
+
 def inference(
         model,
         data_loader,
@@ -61,6 +111,7 @@ def inference(
         expected_results=(),
         expected_results_sigma_tol=4,
         output_folder=None,
+        visualize_results=True
 ):
     # convert to a torch.device for efficiency
     device = torch.device(device)
@@ -93,6 +144,9 @@ def inference(
         expected_results=expected_results,
         expected_results_sigma_tol=expected_results_sigma_tol,
     )
+
+    if visualize_results:
+        visualize_results_in_images(dataset, predictions, output_folder)
 
     return evaluate(dataset=dataset,
                     predictions=predictions,
